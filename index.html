@@ -1,0 +1,1105 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <title>Calcolatore Ascensione Genshin</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --genshin-gold: #d4af37;
+      --genshin-dark: #1a1a1a;
+      --genshin-light: rgba(255, 255, 255, 0.9);
+    }
+
+    body {
+      font-family: 'Cinzel', serif;
+      background: linear-gradient(135deg, #0e0e0e 0%, #1a1a1a 100%);
+      color: var(--genshin-light);
+      padding: 30px;
+      text-align: center;
+      min-height: 100vh;
+      margin: 0;
+    }
+
+    .container {
+      background: rgba(255, 255, 255, 0.03);
+      padding: 30px;
+      border-radius: 20px;
+      width: 95%;
+      max-width: 1200px;
+      margin: 30px auto;
+      box-shadow: 0 0 20px rgba(212, 175, 55, 0.1);
+      border: 1px solid rgba(212, 175, 55, 0.2);
+      backdrop-filter: blur(10px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    h1, h2 {
+      text-align: center;
+      width: 100%;
+    }
+
+    h1 {
+      color: var(--genshin-gold);
+      font-size: 2.5em;
+      margin-bottom: 30px;
+      text-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
+    }
+
+    .vision-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 15px;
+      margin: 20px auto;
+      width: 100%;
+      max-width: 800px;
+    }
+
+    .vision-button {
+      width: 100px;
+      height: 100px;
+      background: linear-gradient(135deg, var(--genshin-gold) 0%, #ffd700 100%);
+      color: var(--genshin-dark);
+      border: none;
+      border-radius: 15px;
+      font-weight: bold;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease-in-out;
+      box-shadow: 0 0 15px rgba(212, 175, 55, 0.2);
+    }
+
+    .vision-button:hover {
+      transform: scale(1.1);
+      box-shadow: 0 0 20px rgba(212, 175, 55, 0.4);
+    }
+
+    .vision-button img {
+      width: 50px;
+      height: 50px;
+      margin-bottom: 5px;
+    }
+
+    .level-selectors {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 40px;
+      flex-wrap: wrap;
+      margin: 20px auto;
+      width: 100%;
+      max-width: 800px;
+      padding: 0 15px;
+    }
+
+    .level-selector {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-width: 200px;
+    }
+
+    .material-inputs {
+      display: grid;
+      grid-template-columns: repeat(2, 280px);
+      gap: 80px;
+      justify-content: center;
+      align-items: start;
+      width: 100%;
+      max-width: 1000px;
+      margin: 30px auto;
+      padding: 0;
+    }
+
+    .material-line {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 10px;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 15px;
+      border: 1px solid rgba(212, 175, 55, 0.1);
+      margin: 0;
+      height: 100%;
+      min-height: 220px;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      width: 100%;
+    }
+
+    .material-line:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 5px 15px rgba(212, 175, 55, 0.2);
+    }
+
+    .material-line img {
+      width: 100px;
+      height: 100px;
+      margin-bottom: 15px;
+      filter: drop-shadow(0 0 5px rgba(212, 175, 55, 0.3));
+    }
+
+    input[type="number"] {
+      width: 140px;
+      height: 40px;
+      padding: 5px;
+      border: 1px solid var(--genshin-gold);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.1);
+      color: var(--genshin-light);
+      font-size: 1.2rem;
+      text-align: center;
+      margin-top: 15px;
+    }
+
+    .material-inputs {
+      display: grid;
+      grid-template-areas: 
+        "gemme pezzi"
+        "frammenti schegge";
+    }
+
+    @media (max-width: 1000px) and (min-width: 701px) {
+      .material-inputs {
+        grid-template-columns: repeat(2, 250px);
+        gap: 50px;
+      }
+    }
+
+    @media (max-width: 700px) {
+      .material-inputs {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 30px;
+        width: 90%;
+      }
+
+      .material-line {
+        max-width: 280px;
+        padding: 8px;
+        min-height: 200px;
+      }
+
+      .container {
+        padding: 20px;
+        margin: 15px auto;
+      }
+    }
+
+    @media (max-width: 400px) {
+      .material-inputs {
+        gap: 25px;
+        width: 95%;
+      }
+
+      .material-line {
+        padding: 8px;
+        min-height: 180px;
+        max-width: 100%;
+      }
+
+      .container {
+        padding: 15px;
+        margin: 10px auto;
+      }
+
+      input[type="number"] {
+        width: 120px;
+        height: 35px;
+      }
+    }
+
+    #schegge-container { order: 1; }
+    #frammenti-container { order: 2; }
+    #pezzi-container { order: 3; }
+    #gemme-container { order: 4; }
+
+    .slider-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+    }
+
+    select {
+      padding: 10px 20px;
+      border: 1px solid var(--genshin-gold);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.1);
+      color: var(--genshin-light);
+      font-size: 1rem;
+      margin: 10px;
+      cursor: pointer;
+      width: 150px;
+    }
+
+    select:focus {
+      outline: none;
+      box-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
+    }
+
+    .calculate {
+      margin-top: 30px;
+      padding: 15px 30px;
+      background: linear-gradient(135deg, var(--genshin-gold) 0%, #ffd700 100%);
+      border: none;
+      border-radius: 12px;
+      font-weight: bold;
+      font-size: 1.2rem;
+      cursor: pointer;
+      color: var(--genshin-dark);
+      box-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
+      transition: all 0.3s ease;
+      font-family: 'Cinzel', serif;
+    }
+
+    .calculate:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 20px rgba(212, 175, 55, 0.5);
+    }
+
+    .result {
+      margin-top: 30px;
+      padding: 20px;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 15px;
+      border: 1px solid rgba(212, 175, 55, 0.2);
+    }
+
+    .warning {
+      background: rgba(255, 87, 87, 0.1);
+      border: 1px solid rgba(255, 87, 87, 0.3);
+      padding: 20px;
+      border-radius: 15px;
+      margin: 20px 0;
+    }
+
+    .warning h3 {
+      color: #ff5757;
+      margin-top: 0;
+    }
+
+    .conversione {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+      margin: 20px 0;
+      padding: 15px;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 15px;
+      border: 1px solid rgba(212, 175, 55, 0.1);
+    }
+
+    .conversione img {
+      width: 70px;
+      height: 70px;
+      filter: drop-shadow(0 0 5px rgba(212, 175, 55, 0.3));
+    }
+
+    .conversione span {
+      font-size: 1.2rem;
+    }
+
+    .conversione span:nth-child(2) {
+      color: var(--genshin-gold);
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+
+    label {
+      display: block;
+      margin: 15px 0 5px;
+      color: var(--genshin-gold);
+      font-size: 1.1rem;
+    }
+
+    @keyframes shimmer {
+      0% { filter: brightness(1); }
+      50% { filter: brightness(1.2); }
+      100% { filter: brightness(1); }
+    }
+
+    .vision-button, .calculate {
+      animation: shimmer 3s infinite;
+    }
+
+    #output {
+      margin-top: 30px;
+    }
+
+    #output h3 {
+      color: var(--genshin-gold);
+      font-size: 1.3rem;
+      margin: 25px 0 15px;
+      text-shadow: 0 0 10px rgba(212, 175, 55, 0.2);
+    }
+
+    .material-breakdown {
+      background: rgba(212, 175, 55, 0.05);
+      border: 1px solid rgba(212, 175, 55, 0.2);
+      padding: 15px;
+      border-radius: 15px;
+      margin: 15px 0;
+    }
+
+    .material-breakdown h4 {
+      color: var(--genshin-gold);
+      margin: 0 0 10px 0;
+    }
+
+    .material-equivalence {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin: 10px 0;
+      flex-wrap: wrap;
+    }
+
+    .material-equivalence img {
+      width: 40px;
+      height: 40px;
+    }
+
+    .material-equivalence span {
+      color: var(--genshin-gold);
+    }
+
+    .missing-materials {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(212, 175, 55, 0.2);
+      padding: 15px;
+      border-radius: 15px;
+      margin: 15px 0;
+    }
+
+    .missing-materials h3 {
+      color: var(--genshin-gold);
+      margin-top: 0;
+    }
+
+    .language-selector {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .language-selector select {
+      padding: 5px 10px;
+      margin: 0;
+      width: auto;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid var(--genshin-gold);
+      color: var(--genshin-light);
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .language-selector select:focus {
+      outline: none;
+      box-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
+    }
+
+    .language-selector label {
+      margin: 0;
+      color: var(--genshin-gold);
+    }
+
+    h2 {
+      margin-top: 40px;
+      margin-bottom: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="language-selector">
+      <label for="language">Language:</label>
+      <select id="language" onchange="changeLanguage(this.value)">
+        <option value="en">English</option>
+        <option value="it">Italiano</option>
+        <option value="es">Español</option>
+        <option value="fr">Français</option>
+        <option value="de">Deutsch</option>
+      </select>
+    </div>
+    
+    <h1>Calcolatore Ascensione Genshin</h1>
+    <div class="vision-buttons" id="visionButtons"></div>
+
+    <div class="level-selectors">
+      <div class="level-selector">
+        <label for="fromLevel">Livello attuale:</label>
+        <select id="fromLevel">
+          <option value="20">20</option><option value="40">40</option>
+          <option value="50">50</option><option value="60">60</option>
+          <option value="70">70</option><option value="80">80</option>
+        </select>
+      </div>
+
+      <div class="level-selector">
+        <label for="toLevel">Livello da raggiungere:</label>
+        <select id="toLevel">
+          <option value="40">40</option><option value="50">50</option>
+          <option value="60">60</option><option value="70">70</option>
+          <option value="80">80</option><option value="90">90</option>
+        </select>
+      </div>
+    </div>
+
+    <h2>Materiali posseduti</h2>
+    <div class="material-inputs">
+      <div class="material-line" id="schegge-container">
+        <img id="img-scheggia" src="" alt="Scheggia">
+        <div class="slider-container">
+          <input type="number" id="skegge" placeholder="0" min="0">
+        </div>
+      </div>
+      <div class="material-line" id="frammenti-container">
+        <img id="img-frammento" src="" alt="Frammento">
+        <div class="slider-container">
+          <input type="number" id="frammenti" placeholder="0" min="0">
+        </div>
+      </div>
+      <div class="material-line" id="pezzi-container">
+        <img id="img-pezzo" src="" alt="Pezzo">
+        <div class="slider-container">
+          <input type="number" id="pezzi" placeholder="0" min="0">
+        </div>
+      </div>
+      <div class="material-line" id="gemme-container">
+        <img id="img-gemma" src="" alt="Gemma">
+        <div class="slider-container">
+          <input type="number" id="gemme" placeholder="0" min="0">
+        </div>
+      </div>
+    </div>
+
+    <button class="calculate" onclick="calcola()">Calcola materiali necessari</button>
+    <div class="result" id="output"></div>
+  </div>
+<script>
+const visioni = {
+  pyro: {
+    nome: "Pyro",
+    simbolo: "https://static.wikia.nocookie.net/gensin-impact/images/e/e8/Element_Pyro.png",
+    materiali: [
+      "https://static.wikia.nocookie.net/gensin-impact/images/5/51/Item_Agnidus_Agate_Sliver.png",
+      "https://static.wikia.nocookie.net/gensin-impact/images/e/ec/Item_Agnidus_Agate_Fragment.png",
+      "https://static.wikia.nocookie.net/gensin-impact/images/0/00/Item_Agnidus_Agate_Chunk.png",
+      "https://static.wikia.nocookie.net/gensin-impact/images/0/0d/Item_Agnidus_Agate_Gemstone.png"
+    ]
+  },
+  cryo: {
+    nome: "Cryo",
+    simbolo: "https://static.wikia.nocookie.net/gensin-impact/images/8/88/Element_Cryo.png",
+    materiali: [
+      "https://static.wikia.nocookie.net/gensin-impact/images/8/87/Item_Shivada_Jade_Sliver.png",
+      "https://static.wikia.nocookie.net/gensin-impact/images/9/9a/Item_Shivada_Jade_Fragment.png",
+      "https://static.wikia.nocookie.net/gensin-impact/images/4/41/Item_Shivada_Jade_Chunk.png",
+      "https://static.wikia.nocookie.net/gensin-impact/images/e/e9/Item_Shivada_Jade_Gemstone.png"
+    ]
+  },
+  hydro: {
+    nome: "Hydro",
+    simbolo: "https://static.wikia.nocookie.net/gensin-impact/images/3/35/Element_Hydro.png",
+    materiali: [
+      "https://static.wikia.nocookie.net/gensin-impact/images/f/f8/Item_Varunada_Lazurite_Sliver.png",
+      "https://static.wikia.nocookie.net/gensin-impact/images/f/f6/Item_Varunada_Lazurite_Fragment.png",
+      "https://static.wikia.nocookie.net/gensin-impact/images/f/f4/Item_Varunada_Lazurite_Chunk.png",
+      "https://static.wikia.nocookie.net/gensin-impact/images/a/a4/Item_Varunada_Lazurite_Gemstone.png"
+    ]
+  },
+  electro: {
+    nome: "Electro",
+    simbolo: "https://static.wikia.nocookie.net/gensin-impact/images/7/73/Element_Electro.png",
+    materiali: [
+      "https://static.wikia.nocookie.net/gensin-impact/images/3/39/Item_Vajrada_Amethyst_Sliver.png",
+      "https://static.wikia.nocookie.net/gensin-impact/images/c/cb/Item_Vajrada_Amethyst_Fragment.png",
+      "https://static.wikia.nocookie.net/gensin-impact/images/c/c1/Item_Vajrada_Amethyst_Chunk.png",
+      "https://static.wikia.nocookie.net/gensin-impact/images/b/be/Item_Vajrada_Amethyst_Gemstone.png"
+    ]
+  },
+  geo: {
+    nome: "Geo",
+    simbolo: "https://static.wikia.nocookie.net/gensin-impact/images/4/4a/Element_Geo.png",
+    materiali: [
+      "https://static.wikia.nocookie.net/gensin-impact/images/3/33/Item_Prithiva_Topaz_Sliver.png",
+      "https://static.wikia.nocookie.net/gensin-impact/images/3/3e/Item_Prithiva_Topaz_Fragment.png",
+      "https://static.wikia.nocookie.net/gensin-impact/images/4/4b/Item_Prithiva_Topaz_Chunk.png",
+      "https://static.wikia.nocookie.net/gensin-impact/images/e/eb/Item_Prithiva_Topaz_Gemstone.png"
+    ]
+  },
+  anemo: {
+    nome: "Anemo",
+    simbolo: "https://static.wikia.nocookie.net/gensin-impact/images/a/a4/Element_Anemo.png",
+    materiali: [
+      "https://static.wikia.nocookie.net/gensin-impact/images/9/93/Item_Vayuda_Turquoise_Sliver.png",
+      "https://static.wikia.nocookie.net/gensin-impact/images/7/71/Item_Vayuda_Turquoise_Fragment.png",
+      "https://static.wikia.nocookie.net/gensin-impact/images/3/33/Item_Vayuda_Turquoise_Chunk.png",
+      "https://static.wikia.nocookie.net/gensin-impact/images/3/32/Item_Vayuda_Turquoise_Gemstone.png"
+    ]
+  },
+  dendro: {
+    nome: "Dendro",
+    simbolo: "https://static.wikia.nocookie.net/gensin-impact/images/f/f4/Element_Dendro.png",
+    materiali: [
+      "https://static.wikia.nocookie.net/gensin-impact/images/2/26/Item_Nagadus_Emerald_Sliver.png",
+      "https://static.wikia.nocookie.net/gensin-impact/images/2/2d/Item_Nagadus_Emerald_Fragment.png",
+      "https://static.wikia.nocookie.net/gensin-impact/images/a/a9/Item_Nagadus_Emerald_Chunk.png",
+      "https://static.wikia.nocookie.net/gensin-impact/images/c/c0/Item_Nagadus_Emerald_Gemstone.png"
+    ]
+  }
+};
+
+let elemento = "pyro";
+
+window.onload = () => {
+  const container = document.getElementById("visionButtons");
+  for (let key in visioni) {
+    const btn = document.createElement("button");
+    btn.className = "vision-button";
+    btn.onclick = () => setElement(key);
+    btn.innerHTML = `<img src="${visioni[key].simbolo}"><span>${visioni[key].nome}</span>`;
+    container.appendChild(btn);
+  }
+  setElement("pyro");
+};
+
+function setElement(el) {
+  elemento = el;
+  const imgs = visioni[el].materiali;
+  document.getElementById("img-scheggia").src = imgs[0];
+  document.getElementById("img-frammento").src = imgs[1];
+  document.getElementById("img-pezzo").src = imgs[2];
+  document.getElementById("img-gemma").src = imgs[3];
+}
+
+function calcolaMaterialiNecessari(fromLevel, toLevel) {
+  let materiali = {
+    schegge: 0,
+    frammenti: 0,
+    pezzi: 0,
+    gemme: 0
+  };
+
+  if (fromLevel <= 20 && toLevel >= 40) materiali.schegge += 1;  // 20->40
+  if (fromLevel <= 40 && toLevel >= 50) materiali.frammenti += 3;  // 40->50
+  if (fromLevel <= 50 && toLevel >= 60) materiali.frammenti += 6;  // 50->60
+  if (fromLevel <= 60 && toLevel >= 70) materiali.pezzi += 3;  // 60->70
+  if (fromLevel <= 70 && toLevel >= 80) materiali.pezzi += 6;  // 70->80
+  if (fromLevel <= 80 && toLevel >= 90) materiali.gemme += 6;  // 80->90
+
+  return materiali;
+}
+
+function calcolaEquivalenze(materiale, quantita) {
+  const equivalenze = {
+    gemme: {
+      pezzi: quantita * 3,
+      frammenti: quantita * 9,
+      schegge: quantita * 27
+    },
+    pezzi: {
+      frammenti: quantita * 3,
+      schegge: quantita * 9
+    },
+    frammenti: {
+      schegge: quantita * 3
+    }
+  };
+  return equivalenze[materiale] || {};
+}
+
+// Dizionario delle traduzioni
+const translations = {
+  en: {
+    title: "Genshin Ascension Calculator",
+    currentLevel: "Current Level:",
+    targetLevel: "Target Level:",
+    materialsOwned: "Materials Owned",
+    calculate: "Calculate required materials",
+    warning: "⚠️ You don't have enough materials to reach level",
+    maxLevel: "With the available materials you can reach maximum level",
+    materialsNeeded: "To reach level %level% you still need",
+    obtainableFrom: "obtainable from",
+    noConversions: "You don't need any conversions! You already have all the materials in the correct format. ✨",
+    conversionsNeeded: "Conversions needed to reach level",
+    convert: "Convert",
+    into: "into",
+    couldReach: "✨ With your materials you could reach level"
+  },
+  it: {
+    title: "Calcolatore Ascensione Genshin",
+    currentLevel: "Livello attuale:",
+    targetLevel: "Livello da raggiungere:",
+    materialsOwned: "Materiali posseduti",
+    calculate: "Calcola materiali necessari",
+    warning: "⚠️ Non hai abbastanza materiali per raggiungere il livello",
+    maxLevel: "Con i materiali disponibili puoi arrivare al massimo al livello",
+    materialsNeeded: "Per raggiungere il livello %level% ti servono ancora",
+    obtainableFrom: "ottenibili da",
+    noConversions: "Non hai bisogno di fare conversioni! Hai già tutti i materiali necessari nel formato corretto. ✨",
+    conversionsNeeded: "Conversioni necessarie per raggiungere il livello",
+    convert: "Converti",
+    into: "in",
+    couldReach: "✨ Con i materiali che possiedi potresti arrivare fino al livello"
+  },
+  es: {
+    title: "Calculadora de Ascensión de Genshin",
+    currentLevel: "Nivel actual:",
+    targetLevel: "Nivel objetivo:",
+    materialsOwned: "Materiales disponibles",
+    calculate: "Calcular materiales necesarios",
+    warning: "⚠️ No tienes suficientes materiales para alcanzar el nivel",
+    maxLevel: "Con los materiales disponibles puedes llegar hasta el nivel",
+    materialsNeeded: "Para alcanzar el nivel %level% aún necesitas",
+    obtainableFrom: "obtenibles de",
+    noConversions: "¡No necesitas conversiones! Ya tienes todos los materiales en el formato correcto. ✨",
+    conversionsNeeded: "Conversiones necesarias para alcanzar el nivel",
+    convert: "Convertir",
+    into: "en",
+    couldReach: "✨ Con tus materiales podrías llegar hasta el nivel"
+  },
+  fr: {
+    title: "Calculateur d'Ascension Genshin",
+    currentLevel: "Niveau actuel :",
+    targetLevel: "Niveau cible :",
+    materialsOwned: "Matériaux possédés",
+    calculate: "Calculer les matériaux nécessaires",
+    warning: "⚠️ Vous n'avez pas assez de matériaux pour atteindre le niveau",
+    maxLevel: "Avec les matériaux disponibles, vous pouvez atteindre le niveau",
+    materialsNeeded: "Pour atteindre le niveau %level%, il vous manque",
+    obtainableFrom: "obtenables à partir de",
+    noConversions: "Vous n'avez pas besoin de conversions ! Vous avez déjà tous les matériaux au bon format. ✨",
+    conversionsNeeded: "Conversions nécessaires pour atteindre le niveau",
+    convert: "Convertir",
+    into: "en",
+    couldReach: "✨ Avec vos matériaux, vous pourriez atteindre le niveau"
+  },
+  de: {
+    title: "Genshin Aufstiegsrechner",
+    currentLevel: "Aktuelles Level:",
+    targetLevel: "Ziellevel:",
+    materialsOwned: "Verfügbare Materialien",
+    calculate: "Benötigte Materialien berechnen",
+    warning: "⚠️ Du hast nicht genug Materialien, um Level zu erreichen",
+    maxLevel: "Mit den verfügbaren Materialien kannst du maximal Level erreichen",
+    materialsNeeded: "Um Level %level% zu erreichen, benötigst du noch",
+    obtainableFrom: "erhältlich aus",
+    noConversions: "Du brauchst keine Umwandlungen! Du hast bereits alle Materialien im richtigen Format. ✨",
+    conversionsNeeded: "Benötigte Umwandlungen, um Level zu erreichen",
+    convert: "Wandle um",
+    into: "in",
+    couldReach: "✨ Mit deinen Materialien könntest du Level erreichen"
+  }
+};
+
+// Funzione per ottenere la lingua preferita dell'utente
+function getPreferredLanguage() {
+  // Prova a prendere la lingua salvata
+  const savedLang = localStorage.getItem('preferredLanguage');
+  if (savedLang && translations[savedLang]) {
+    return savedLang;
+  }
+  
+  // Prova a rilevare la lingua del browser
+  const browserLang = navigator.language.split('-')[0];
+  if (translations[browserLang]) {
+    return browserLang;
+  }
+  
+  // Default a inglese se non troviamo una corrispondenza
+  return 'en';
+}
+
+// Funzione per cambiare la lingua
+function changeLanguage(lang) {
+  if (!translations[lang]) return;
+  
+  // Salva la preferenza
+  localStorage.setItem('preferredLanguage', lang);
+  
+  // Aggiorna tutti i testi
+  document.title = translations[lang].title;
+  document.querySelector('h1').textContent = translations[lang].title;
+  document.querySelector('label[for="fromLevel"]').textContent = translations[lang].currentLevel;
+  document.querySelector('label[for="toLevel"]').textContent = translations[lang].targetLevel;
+  document.querySelector('h2').textContent = translations[lang].materialsOwned;
+  document.querySelector('.calculate').textContent = translations[lang].calculate;
+  
+  // Se c'è già un risultato, ricalcola per aggiornare i testi
+  if (document.getElementById('output').innerHTML !== '') {
+    calcola();
+  }
+}
+
+// Funzione per ottenere il testo tradotto
+function getText(key, replacements = {}) {
+  const lang = localStorage.getItem('preferredLanguage') || getPreferredLanguage();
+  let text = translations[lang][key] || translations['en'][key];
+  
+  // Applica le sostituzioni
+  for (const [key, value] of Object.entries(replacements)) {
+    text = text.replace(`%${key}%`, value);
+  }
+  
+  return text;
+}
+
+function calcola() {
+  const from = parseInt(document.getElementById("fromLevel").value);
+  const to = parseInt(document.getElementById("toLevel").value);
+
+  // Materiali disponibili inizialmente
+  let stock = {
+    schegge: parseInt(document.getElementById("skegge").value) || 0,
+    frammenti: parseInt(document.getElementById("frammenti").value) || 0,
+    pezzi: parseInt(document.getElementById("pezzi").value) || 0,
+    gemme: parseInt(document.getElementById("gemme").value) || 0
+  };
+
+  // Trova il massimo livello raggiungibile
+  let maxLivelloRaggiungibile = from;
+  let livelli = [40, 50, 60, 70, 80, 90];
+  let materialiPerMaxLivello = {...stock};
+  
+  for (let livello of livelli) {
+    if (livello > from) {
+      let materialiPerLivello = calcolaMaterialiNecessari(from, livello);
+      let possiamoProcedere = true;
+      
+      // Calcola se possiamo raggiungere questo livello
+      let scheggeNecessarie = 0;
+      let frammentiNecessari = materialiPerLivello.frammenti;
+      let pezziNecessari = materialiPerLivello.pezzi;
+      let gemmeNecessarie = materialiPerLivello.gemme;
+      
+      // Calcola gemme
+      if (gemmeNecessarie > materialiPerMaxLivello.gemme) {
+        let gemmeMancantiPerLivello = gemmeNecessarie - materialiPerMaxLivello.gemme;
+        pezziNecessari += gemmeMancantiPerLivello * 3;
+      }
+      
+      // Calcola pezzi
+      if (pezziNecessari > materialiPerMaxLivello.pezzi) {
+        let pezziMancantiPerLivello = pezziNecessari - materialiPerMaxLivello.pezzi;
+        frammentiNecessari += pezziMancantiPerLivello * 3;
+      }
+      
+      // Calcola frammenti
+      if (frammentiNecessari > materialiPerMaxLivello.frammenti) {
+        let frammentiMancantiPerLivello = frammentiNecessari - materialiPerMaxLivello.frammenti;
+        scheggeNecessarie += frammentiMancantiPerLivello * 3;
+      }
+      
+      // Verifica se abbiamo abbastanza schegge
+      if (scheggeNecessarie <= materialiPerMaxLivello.schegge) {
+        maxLivelloRaggiungibile = livello;
+      } else {
+        break;
+      }
+    }
+  }
+
+  // Calcola i materiali necessari per il livello richiesto
+  let materialiNecessari = calcolaMaterialiNecessari(from, to);
+  
+  // Calcola le conversioni necessarie
+  let conversioni = [];
+  let materialiRimanenti = {...stock};
+  
+  // Calcola il totale dei materiali necessari per ogni tipo
+  let totaleNecessario = {
+    gemme: Math.max(0, materialiNecessari.gemme - materialiRimanenti.gemme),
+    pezzi: materialiNecessari.pezzi,
+    frammenti: materialiNecessari.frammenti,
+    schegge: materialiNecessari.schegge
+  };
+
+  // Calcola prima tutti i materiali necessari partendo dalle gemme
+  if (totaleNecessario.gemme > 0) {
+    totaleNecessario.pezzi += totaleNecessario.gemme * 3;
+  }
+
+  // Calcola i pezzi totali necessari e sottrai quelli disponibili
+  let pezziMancanti = Math.max(0, totaleNecessario.pezzi - materialiRimanenti.pezzi);
+  
+  if (pezziMancanti > 0) {
+    totaleNecessario.frammenti += pezziMancanti * 3;
+  }
+
+  // Calcola i frammenti totali necessari e sottrai quelli disponibili
+  let frammentiMancanti = Math.max(0, totaleNecessario.frammenti - materialiRimanenti.frammenti);
+  
+  // Calcola quante schegge possiamo effettivamente convertire
+  let scheggeDisponibili = materialiRimanenti.schegge;
+  let frammentiOttenibili = Math.floor(scheggeDisponibili / 3);
+  let frammentiEffettivi = Math.min(frammentiMancanti, frammentiOttenibili);
+
+  // Verifica se possiamo raggiungere il livello richiesto
+  let possiamoProcedere = true;
+
+  if (frammentiEffettivi < frammentiMancanti) {
+    possiamoProcedere = false;
+  }
+
+  if (possiamoProcedere && frammentiEffettivi > 0) {
+    conversioni.push({
+      da: "schegge",
+      quantita: frammentiEffettivi * 3,
+      a: "frammenti",
+      ottiene: frammentiEffettivi
+    });
+  }
+
+  // Calcola quanti pezzi possiamo ottenere dai frammenti
+  let frammentiTotali = frammentiEffettivi + materialiRimanenti.frammenti - materialiNecessari.frammenti;
+  let pezziOttenibili = Math.floor(frammentiTotali / 3);
+  let pezziEffettivi = Math.min(pezziMancanti, pezziOttenibili);
+
+  if (pezziEffettivi < pezziMancanti) {
+    possiamoProcedere = false;
+  }
+
+  if (possiamoProcedere && pezziEffettivi > 0) {
+    conversioni.push({
+      da: "frammenti",
+      quantita: pezziEffettivi * 3,
+      a: "pezzi",
+      ottiene: pezziEffettivi
+    });
+  }
+
+  // Calcola quante gemme possiamo ottenere dai pezzi
+  if (totaleNecessario.gemme > 0) {
+    let pezziTotali = pezziEffettivi + materialiRimanenti.pezzi - materialiNecessari.pezzi;
+    let gemmeOttenibili = Math.floor(pezziTotali / 3);
+    let gemmeEffettive = Math.min(totaleNecessario.gemme, gemmeOttenibili);
+
+    if (gemmeEffettive < totaleNecessario.gemme) {
+      possiamoProcedere = false;
+    }
+
+    if (possiamoProcedere && gemmeEffettive > 0) {
+      conversioni.push({
+        da: "pezzi",
+        quantita: gemmeEffettive * 3,
+        a: "gemme",
+        ottiene: gemmeEffettive
+      });
+    }
+  }
+
+  // Genera output
+  const icone = visioni[elemento].materiali;
+  let output = "";
+
+  // Se non possiamo raggiungere il livello richiesto, mostra il massimo raggiungibile
+  if (!possiamoProcedere) {
+    output += `<div class="warning"><h3>${getText('warning')} ${to}</h3>`;
+    output += `<p>${getText('maxLevel')} ${maxLivelloRaggiungibile}</p>`;
+    
+    // Calcola i materiali mancanti per il livello richiesto originale
+    let materialiPerLivelloRichiesto = calcolaMaterialiNecessari(maxLivelloRaggiungibile, to);
+    
+    // Calcola i materiali rimanenti dopo aver raggiunto il livello massimo
+    let materialiRimanentiDopoMax = {...stock};
+    let materialiUsatiPerMax = calcolaMaterialiNecessari(from, maxLivelloRaggiungibile);
+    
+    // Sottrai i materiali usati per il livello massimo
+    materialiRimanentiDopoMax.schegge -= (materialiUsatiPerMax.schegge || 0);
+    materialiRimanentiDopoMax.frammenti -= (materialiUsatiPerMax.frammenti || 0);
+    materialiRimanentiDopoMax.pezzi -= (materialiUsatiPerMax.pezzi || 0);
+    materialiRimanentiDopoMax.gemme -= (materialiUsatiPerMax.gemme || 0);
+    
+    // Calcola quanti materiali di ogni tipo possiamo ottenere dai materiali rimanenti
+    let materialiOttenibili = {
+      gemme: materialiRimanentiDopoMax.gemme,
+      pezzi: materialiRimanentiDopoMax.pezzi,
+      frammenti: materialiRimanentiDopoMax.frammenti,
+      schegge: materialiRimanentiDopoMax.schegge
+    };
+    
+    // Converti tutti i materiali rimanenti nel tipo più alto possibile
+    let scheggeRimanenti = materialiOttenibili.schegge;
+    let frammentiDaSchegge = Math.floor(scheggeRimanenti / 3);
+    materialiOttenibili.frammenti += frammentiDaSchegge;
+    
+    let frammentiTotali = materialiOttenibili.frammenti;
+    let pezziDaFrammenti = Math.floor(frammentiTotali / 3);
+    materialiOttenibili.pezzi += pezziDaFrammenti;
+    
+    let pezziTotali = materialiOttenibili.pezzi;
+    let gemmeDaPezzi = Math.floor(pezziTotali / 3);
+    materialiOttenibili.gemme += gemmeDaPezzi;
+    
+    // Calcola i materiali mancanti per ogni tipo
+    let materialiMancanti = {
+      gemme: Math.max(0, materialiPerLivelloRichiesto.gemme - materialiOttenibili.gemme),
+      pezzi: Math.max(0, materialiPerLivelloRichiesto.pezzi - materialiOttenibili.pezzi),
+      frammenti: Math.max(0, materialiPerLivelloRichiesto.frammenti - materialiOttenibili.frammenti),
+      schegge: Math.max(0, materialiPerLivelloRichiesto.schegge - materialiOttenibili.schegge)
+    };
+    
+    // Mostra i materiali mancanti e le loro equivalenze
+    output += `<div class="missing-materials">`;
+    output += `<h3>${getText('materialsNeeded', {level: to})}:</h3>`;
+    
+    if (materialiMancanti.gemme > 0) {
+      output += `<div class="material-equivalence">`;
+      output += `<img src="${icone[3]}" alt="Gemme"><span>${materialiMancanti.gemme} gemme, ${getText('obtainableFrom')}:</span>`;
+      output += `<ul style="list-style: none; padding: 0;">`;
+      output += `<li><img src="${icone[2]}" alt="Pezzi"><span>${materialiMancanti.gemme * 3} pezzi</span></li>`;
+      output += `<li><img src="${icone[1]}" alt="Frammenti"><span>${materialiMancanti.gemme * 9} frammenti</span></li>`;
+      output += `<li><img src="${icone[0]}" alt="Schegge"><span>${materialiMancanti.gemme * 27} schegge</span></li>`;
+      output += `</ul>`;
+      output += `</div>`;
+    }
+    
+    if (materialiMancanti.pezzi > 0) {
+      output += `<div class="material-equivalence">`;
+      output += `<img src="${icone[2]}" alt="Pezzi"><span>${materialiMancanti.pezzi} pezzi, ${getText('obtainableFrom')}:</span>`;
+      output += `<ul style="list-style: none; padding: 0;">`;
+      output += `<li><img src="${icone[1]}" alt="Frammenti"><span>${materialiMancanti.pezzi * 3} frammenti</span></li>`;
+      output += `<li><img src="${icone[0]}" alt="Schegge"><span>${materialiMancanti.pezzi * 9} schegge</span></li>`;
+      output += `</ul>`;
+      output += `</div>`;
+    }
+    
+    if (materialiMancanti.frammenti > 0) {
+      output += `<div class="material-equivalence">`;
+      output += `<img src="${icone[1]}" alt="Frammenti"><span>${materialiMancanti.frammenti} frammenti, ${getText('obtainableFrom')}:</span>`;
+      output += `<ul style="list-style: none; padding: 0;">`;
+      output += `<li><img src="${icone[0]}" alt="Schegge"><span>${materialiMancanti.frammenti * 3} schegge</span></li>`;
+      output += `</ul>`;
+      output += `</div>`;
+    }
+    
+    if (materialiMancanti.schegge > 0) {
+      output += `<div class="material-equivalence">`;
+      output += `<img src="${icone[0]}" alt="Schegge"><span>${materialiMancanti.schegge} schegge</span>`;
+      output += `</div>`;
+    }
+    
+    output += `</div>`;
+    output += `</div>`;
+    
+    // Ricalcola le conversioni per il livello massimo raggiungibile
+    materialiNecessari = calcolaMaterialiNecessari(from, maxLivelloRaggiungibile);
+    conversioni = [];
+    materialiRimanenti = {...stock};
+    
+    totaleNecessario = {
+      gemme: Math.max(0, materialiNecessari.gemme - materialiRimanenti.gemme),
+      pezzi: materialiNecessari.pezzi,
+      frammenti: materialiNecessari.frammenti,
+      schegge: materialiNecessari.schegge
+    };
+
+    if (totaleNecessario.gemme > 0) {
+      totaleNecessario.pezzi += totaleNecessario.gemme * 3;
+    }
+
+    pezziMancanti = Math.max(0, totaleNecessario.pezzi - materialiRimanenti.pezzi);
+    if (pezziMancanti > 0) {
+      totaleNecessario.frammenti += pezziMancanti * 3;
+    }
+
+    frammentiMancanti = Math.max(0, totaleNecessario.frammenti - materialiRimanenti.frammenti);
+    frammentiEffettivi = Math.min(frammentiMancanti, Math.floor(materialiRimanenti.schegge / 3));
+
+    if (frammentiEffettivi > 0) {
+      conversioni.push({
+        da: "schegge",
+        quantita: frammentiEffettivi * 3,
+        a: "frammenti",
+        ottiene: frammentiEffettivi
+      });
+    }
+
+    frammentiTotali = frammentiEffettivi + materialiRimanenti.frammenti - materialiNecessari.frammenti;
+    pezziEffettivi = Math.min(pezziMancanti, Math.floor(frammentiTotali / 3));
+
+    if (pezziEffettivi > 0) {
+      conversioni.push({
+        da: "frammenti",
+        quantita: pezziEffettivi * 3,
+        a: "pezzi",
+        ottiene: pezziEffettivi
+      });
+    }
+
+    if (totaleNecessario.gemme > 0) {
+      let pezziTotali = pezziEffettivi + materialiRimanenti.pezzi - materialiNecessari.pezzi;
+      let gemmeEffettive = Math.min(totaleNecessario.gemme, Math.floor(pezziTotali / 3));
+
+      if (gemmeEffettive > 0) {
+        conversioni.push({
+          da: "pezzi",
+          quantita: gemmeEffettive * 3,
+          a: "gemme",
+          ottiene: gemmeEffettive
+        });
+      }
+    }
+  } else if (maxLivelloRaggiungibile > to) {
+    // Se possiamo raggiungere un livello più alto di quello richiesto
+    output += `<div class="info" style="background: rgba(212, 175, 55, 0.1); border: 1px solid rgba(212, 175, 55, 0.3); padding: 15px; border-radius: 15px; margin: 15px 0;">
+      <p>${getText('couldReach')} ${maxLivelloRaggiungibile}!</p>
+    </div>`;
+  }
+
+  // Ordina le conversioni nell'ordine corretto: schegge -> frammenti -> pezzi -> gemme
+  const ordineConversioni = {
+    'schegge': 1,
+    'frammenti': 2,
+    'pezzi': 3
+  };
+  
+  conversioni.sort((a, b) => ordineConversioni[a.da] - ordineConversioni[b.da]);
+
+  // Mostra le conversioni necessarie
+  if (conversioni.length > 0) {
+    output += `<h3>${getText('conversionsNeeded', {level: !possiamoProcedere ? maxLivelloRaggiungibile : to})}:</h3>`;
+    
+    // Mostra le conversioni
+    for (let conv of conversioni) {
+      let iconaFrom, iconaTo;
+      switch(conv.da) {
+        case "schegge": iconaFrom = icone[0]; iconaTo = icone[1]; break;
+        case "frammenti": iconaFrom = icone[1]; iconaTo = icone[2]; break;
+        case "pezzi": iconaFrom = icone[2]; iconaTo = icone[3]; break;
+      }
+      output += `<div class="conversione"><img src="${iconaFrom}"><span>→</span><img src="${iconaTo}"><span>${getText('convert')} ${conv.quantita} ${conv.da} ${getText('into')} ${conv.ottiene} ${conv.a}</span></div>`;
+    }
+  }
+
+  // Se non ci sono conversioni necessarie
+  if (conversioni.length === 0) {
+    output += "<p>${getText('noConversions')}</p>";
+  }
+
+  document.getElementById("output").innerHTML = output;
+  document.getElementById("output").style.display = "block";
+}
+
+// Imposta la lingua iniziale quando la pagina carica
+document.addEventListener('DOMContentLoaded', () => {
+  const lang = getPreferredLanguage();
+  document.getElementById('language').value = lang;
+  changeLanguage(lang);
+});
+</script>
+</body>
+</html>
